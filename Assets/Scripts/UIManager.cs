@@ -1,3 +1,4 @@
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,6 +6,17 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance
     { get; private set; }
+
+    public enum MenuState
+    {
+        MainMenu,
+        Configurator,
+        GamePlay,
+        PauseMenu,
+        GameOver
+    }
+
+    public MenuState currentMenuState { get; private set; } = MenuState.MainMenu;
 
     private void Awake()
     {
@@ -23,23 +35,59 @@ public class UIManager : MonoBehaviour
     {
 
     }
-
+    // --- Public methods to handle UI state changes ---
+    /// <summary>
+    /// Requests the UI system to transition to the Main Menu state.
+    /// Scene-specific UI handlers will react to this change.
+    /// </summary>
     // Method to show the main menu
-    public void ShowMainMenu()
+    public void RequestMainMenu()
     {
-        // Implement logic to display the main menu UI
-        Debug.Log("Main Menu Displayed");
-
-        // Example: Load the main menu scene or enable the main menu UI elements
-        GameManager.Instance.SaveGameData(); // Save game data before exiting
-        SceneManager.LoadScene(0); // Load the main menu scene
-        // Or enable the main menu UI elements if they are part of the current scene
+        currentMenuState = MenuState.MainMenu;
+        Debug.Log("UIManager: Requested Main Menu state");
     }
 
-    public void ShowConfigurator()
+    /// <summary>
+    /// Requests the UI system to transition to the Configurator state.
+    /// Scene-specific UI handlers will react to this change.
+    /// </summary>
+    public void RequestConfigurator()
     {
+        currentMenuState = MenuState.Configurator;
         // Implement logic to display the configurator UI
     }
+
+    /// <summary>
+    /// Requests the UI system to transition to the Gameplay state.
+    /// Scene-specific UI handlers will react to this change and typically load the game scene.
+    /// </summary>
+    public void RequestGamePlay()
+    {
+        currentMenuState = MenuState.GamePlay;
+        Debug.Log("UIManager: Requested Gameplay state");
+    }
+
+    /// <summary>
+    /// Requests the UI system to transition to the Pause Menu state.
+    /// Scene-specific UI handlers will react to this change and typically show the pause menu UI.
+    /// </summary>
+    public void ShowPauseMenu()
+    {
+        currentMenuState = MenuState.PauseMenu;
+        Debug.Log("Pause Menu Displayed");
+    }
+
+    /// <summary>
+    /// Requests the UI system to transition to the Game Over state.
+    /// Scene-specific UI handlers will react to this change and typically show the game over UI.
+    /// </summary>
+    public void ShowGameOver()
+    {
+        currentMenuState = MenuState.GameOver;
+        Debug.Log("Game Over Displayed");
+    }
+
+    // Utility methods for UI interactions
 
     public void DisplayMessage(string message)
     {

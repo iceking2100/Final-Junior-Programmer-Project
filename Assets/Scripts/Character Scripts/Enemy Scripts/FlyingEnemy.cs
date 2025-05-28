@@ -39,6 +39,7 @@ public class FlyingEnemy : Enemy
     {
         // Initialization code for FlyingEnemy can go here
         // For example, setting initial health, attack damage, etc.
+        float health = this.Health + 5; // Use the base class property with the current instance
         Debug.Log("FlyingEnemy initialized.");
 
     }
@@ -48,7 +49,5 @@ public class FlyingEnemy : Enemy
     {
         // Update logic for FlyingEnemy can go here
         // For example, checking for player proximity, attacking, etc.
-        Debug.Log("FlyingEnemy is updating.");
-
     }
 }

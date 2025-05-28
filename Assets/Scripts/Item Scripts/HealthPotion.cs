@@ -9,8 +9,8 @@ public class HealthPotion : Item
         // Check if the player is alive before applying health
         if (player.isAlive)
         {
-            player.health += healthAmount; // Restore health to the player
-            Debug.Log($"Player collected a health potion and restored {healthAmount} health. Current health: {player.health}");
+            // Restore health to the player
+            Debug.Log($"Player collected a health potion and restored {healthAmount} health. Current health: {player.Health}");
         }
         else
         {

@@ -4,8 +4,9 @@ public class SlimeEnemy : Enemy
 // Inherits from Enemy class, which is a subclass of Character
 // This class represents a slime enemy in the game
 // It can have specific behaviors and properties that differentiate it from other enemies
-// 
 {
+    float health;
+
     // SlimeEnemy can have specific properties or methods that differentiate it from other enemies
     // For example, it might have a unique attack method or movement pattern
     // You can also override methods from the Enemy class if needed
@@ -46,8 +47,12 @@ public class SlimeEnemy : Enemy
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
         // Initialization code for SlimeEnemy can go here
         // For example, setting initial health, attack damage, etc.
+        
+        health = this.Health + 10; // Use the base class property with the current instance
+        Debug.Log("SlimeEnemy initialized with health: " + health);
     }
     // Update is called once per frame
     void Update()

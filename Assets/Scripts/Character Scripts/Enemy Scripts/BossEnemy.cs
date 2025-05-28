@@ -54,7 +54,11 @@ public class BossEnemy : Enemy
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        // Initialization code for BossEnemy can go here
+        // For example, setting initial health, attack damage, etc.
+        float health = this.Health + 20; // Use the base class property with the current instance
+        Debug.Log("BossEnemy initialized with health: " + health);
+
     }
 
     // Update is called once per frame

@@ -12,8 +12,8 @@ public class InGameUIHandler : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created  
     void Start()
     {
-        UpdateLivesDisplay(GameManager.Instance.playerLives);
-        UpdateScoreDisplay(GameManager.Instance.currentScore);
+        UpdateLivesDisplay(GameManager.Instance.GetPlayerLives());
+        UpdateScoreDisplay(GameManager.Instance.GetCurrentScore());
     }
 
     // Update is called once per frame  
@@ -24,14 +24,16 @@ public class InGameUIHandler : MonoBehaviour
 
     public void UpdateScoreDisplay(int score)
     {
-        GameManager.Instance.currentScore += score;
-        scoreText.text = GameManager.Instance.currentScore.ToString();
+        score = GameManager.Instance.GetCurrentScore(); // Get the current score from GameManager
+        string scoreString = score.ToString(); // Convert score to string for display
+        scoreText.text = scoreString;
     }
 
     public void UpdateLivesDisplay(int lives)
     {
-        GameManager.Instance.playerLives += lives;
-        livesText.text = GameManager.Instance.playerLives.ToString();
+        lives = GameManager.Instance.GetPlayerLives();
+        string livesString = lives.ToString(); // Convert lives to string for display
+        livesText.text = livesString;
     }
 
     public void UpdateHealthBar(float currentHealth, float maxHealth)

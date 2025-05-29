@@ -4,16 +4,18 @@ using UnityEngine.UI;
 public class Player : Character
 {
     [SerializeField] private int jumpForce = 10;
-    public bool HasKey { get; internal set; } = true;
+    public bool HasKey { get; internal set; } = false;
 
     // Player-specific properties
     // Health, move speed, and other properties can be set in the inspector or initialized here
     [SerializeField] private float speedModifier = 300f; // Speed modifier for player movement
     [SerializeField] private float maxHorizontalSpeed = 10f; // Maximum horizontal speed for the player
     [SerializeField] private float playerHealthModifier = 2f; // Health modifier for the player
-    [SerializeField] private Slider healthSlider; // Reference to the health slider UI element
+    [SerializeField] private int playerAttackDamage = 20; // Player's attack damage
 
     private Rigidbody2D playerRb;
+    [Header("Animation")] // New Header for animation properties
+    [SerializeField] private Animator animator; // Reference to the Animator component (assigned in Inspector)
 
     // --- Raycast Grounded Detection Variables ---
     [Header("Grounded Detection")]
@@ -42,10 +44,23 @@ public class Player : Character
 
         moveSpeed += speedModifier; // Increase move speed by the speed modifier
 
+        AttackDamage = playerAttackDamage; // Set attack damage for the player
+
         // Ensure groundCheckPoint is assigned
         if (groundCheckPoint == null)
         {
             Debug.LogError("GroundCheckPoint not assigned to Player Script!", this);
+        }
+
+        // Register the player with the GameManager
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.RegisterPlayer(transform); // Register the player transform with the GameManager
+            GameManager.Instance.RegisterPlayerObject(this); // Set the player instance in the GameManager
+        }
+        else
+        {
+            Debug.LogError("GameManager instance is not available. Player registration failed.", this);
         }
 
         // --- Initialize Health Slider ---
@@ -63,10 +78,21 @@ public class Player : Character
     private void Update()
     {
         if (isAlive)
-        {
-            
+        {         
             HandleJumpInput();
             // Add jump logic here if needed
+            if (healthSlider != null)
+            {
+                healthSlider.value = Health; // Update the health slider value
+            }
+            else
+            {
+                Debug.LogWarning("Health Slider is not assigned in Player Script. Health UI will not be updated.", this);
+            }
+            if (Input.GetButtonDown("Fire1")) // Check if the attack button is pressed
+            {
+                Attack(); // Call the attack method
+            }
         }
     }
 
@@ -95,8 +121,51 @@ public class Player : Character
     }
 
     public override void Attack()
-    {
-        throw new System.NotImplementedException();
+    {        
+        // You can also play an attack animation or sound here if desired
+        // For example, you can use an Animator component to trigger an attack animation
+         if (animator != null)
+         {
+            animator.SetTrigger("m_Punch"); // Assuming you have an "Attack" trigger in your Animator
+         }
+        else
+        {
+            Debug.LogWarning("Animator component is not assigned in Player Script. Attack animation will not be played.", this);
+        }
+
+
+
+        // You can also implement a specific attack method here if needed
+        // For example, you can check for nearby enemies and apply damage
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, 1f, LayerMask.GetMask("Enemy")); // Adjust the radius and layer mask as needed
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            enemy.attachedRigidbody.linearVelocity = Vector2.MoveTowards(enemy.attachedRigidbody.linearVelocity, -transform.position, 0.1f); // knockback effect
+            // Check if the enemy has an Enemy script attached
+            if (enemyScript != null)
+            {
+                enemyScript.TakeDamage(AttackDamage); // Call the TakeDamage method on the enemy
+                // Optionally, you can add logic to check if the enemy is defeated and handle it accordingly
+                if (enemyScript.Health <= 0)
+                {
+                    // Optionally, you can add logic to handle enemy defeat, such as playing a death animation or sound
+                    Debug.Log($"{enemy.name} has been defeated!");
+                }
+                // Log the attack for debugging purposes
+                Debug.Log($"Player attacked {enemy.name} for {AttackDamage} damage.");
+            }
+        }
+
+         
+
+        // You can also play an attack sound effect here if desired
+        // AudioSource audioSource = GetComponent<AudioSource>();
+        // if (audioSource != null)
+        // {
+        //     audioSource.Play(); // Play the attack sound effect
+        //     Debug.Log("Player attack sound effect played.");
+        //  }
     }
 
     public override void Move()

@@ -50,8 +50,14 @@ public class SlimeEnemy : Enemy
         // For example, it might move in a bouncing or sliding manner
         ExecutePatrolMovement(); // Call the patrol movement logic from the Enemy base class
 
-        // Or if the slime has completely different movement (e.g., chasing player always.) :
-        // ChaseTarget(targetPosition); // Uncomment this if you want the slime to always chase a target
+        // Check if the player is within a certain distance
+        // If the player is within a certain distance, chase the player
+        if (Vector3.Distance(GameManager.Instance.PlayerTransform.position, transform.position) <= 10f)
+        {
+            // If the player is within a certain distance, chase the player
+            ChaseTarget(GameManager.Instance.PlayerTransform); // Chase the player using the Player's Transform
+        }
+
         Debug.Log("SlimeEnemy moves!");
     }
     public override void TakeDamage(int damageAmount)
@@ -60,6 +66,15 @@ public class SlimeEnemy : Enemy
         // For example, it might have a unique reaction to taking damage
         base.TakeDamage(damageAmount); // Call the base class method to handle health reduction and death logic
         Debug.Log($"SlimeEnemy takes {damageAmount} damage!");
+
+        HealthUpdate(); // Call the method to update the health UI after taking damage
+
+    }
+    public override void HealthUpdate()
+    {
+        // Update the health slider UI for SlimeEnemy
+        HealthUpdate(); // Call the base class method to update the health slider
+        Debug.Log($"SlimeEnemy health updated: {Health}/{MaxHealth}");
     }
     public override void ChaseTarget(Vector2 targetPosition)
     {

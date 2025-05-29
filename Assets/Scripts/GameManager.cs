@@ -4,7 +4,31 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    private static GameManager _instance; // Private static instance for singleton pattern
+    public static GameManager Instance 
+    { 
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<GameManager>();
+                // If still null, create a new GameObject and add GameManager component
+                if (_instance == null)
+                {
+                    GameObject singletonObject = new GameObject();
+                    _instance = singletonObject.AddComponent<GameManager>();
+                    singletonObject.name = typeof(GameManager).ToString() + " (Singleton)";
+                    Debug.Log($"Created new instance of GameManager: {_instance.gameObject.name}");
+                    // Optionally, you can set this GameObject to not be destroyed on load
+                    DontDestroyOnLoad(singletonObject);
+                }
+            }
+            return _instance;
+        }
+    }
+
+    public Transform PlayerTransform { get; private set; }
+    public Player PlayerObject { get; private set; } // Reference to the player GameObject, can be set in the inspector or dynamically assigned
 
     // This 'gameData' object will hold the game state information
     // All game logic (score, lives, high score, player name) will directly modify properties of this object.
@@ -19,21 +43,55 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         LoadGameData(); // Load game data at the start
+        // Load game data from disk when the GameManager is initialized
+        // This ensures that the game state is restored from the last saved state
+        // If the save file does not exist, it will initialize with default values from the GameData constructor
+        // This allows the game to continue from where it left off, maintaining player progress, scores, and other important data
+        // This is useful for maintaining game state across scene loads and ensuring that player progress is saved
 
-        if (Instance == null)
+
+        // Ensure that only one instance of GameManager exists
+        // This is a singleton pattern to ensure only one GameManager exists in the scene
+        // If an instance already exists, destroy the new one to maintain a single instance
+        if (gameData == null)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            gameData = new GameData(); // Initialize gameData if it is null
+        }
+        // Singleton pattern to ensure only one instance of GameManager exists
+        // If an instance already exists, destroy the new one to maintain a single instance
+        // This prevents multiple GameManager instances from being created in the scene
+        // This is useful for managing game state, scores, and other global data
+        // This ensures that the GameManager persists across scene loads
+        // and is not destroyed when loading a new scene
+
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject); // Destroy this instance if it is not the singleton instance
         }
         else
         {
-            Destroy(gameObject);
+            _instance = this; // Set the singleton instance to this GameManager
+            // Optionally, you can set this GameObject to not be destroyed on load
+            DontDestroyOnLoad(gameObject); // This ensures that the GameManager persists across scene loads
         }
     }
     public void AddScore(int score)
     {
         gameData.currentScore += score;
     }
+
+    public void RegisterPlayerObject(Player player)
+    {
+        PlayerObject = player;
+        Debug.Log("Player object set in GameManager: " + player.name);
+    }
+
+    public void RegisterPlayer(Transform playerTransform)
+    {
+        PlayerTransform = playerTransform;
+        Debug.Log("Player registered with GameManager: " + playerTransform.name);
+    }
+
     public void LoseLife()
     {
         gameData.playerLives--;

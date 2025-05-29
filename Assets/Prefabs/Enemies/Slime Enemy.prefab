@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2159405434977234880}
   - component: {fileID: 2730528378862398742}
   - component: {fileID: 6277646152997649254}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Slime Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -106,7 +106,6 @@ MonoBehaviour:
   moveSpeed: 5
   isAlive: 0
   MaxHealth: 150
-  AttackDamage: 0
   ScoreValue: 50
   patrolWaypoints: []
   patrolStyle: 0
@@ -187,7 +186,7 @@ GameObject:
   - component: {fileID: 7351690357988744899}
   - component: {fileID: 1675755408984013146}
   - component: {fileID: 3433696138259185664}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +262,7 @@ GameObject:
   - component: {fileID: 5669678559471527952}
   - component: {fileID: 4025905927070618089}
   - component: {fileID: 8164494436079028287}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Canvas (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -362,7 +361,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1708310402519491254}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -399,7 +398,7 @@ GameObject:
   - component: {fileID: 6745831536796795402}
   - component: {fileID: 2477007749623373588}
   - component: {fileID: 221545590895456816}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -472,7 +471,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8505523080799321900}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -509,7 +508,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6531373823773530040}
   - component: {fileID: 7914161748735498964}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: HP Bar (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2164631901418192295}
   - component: {fileID: 7963453341438432595}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: HP Bar (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 8011030364285808723}
   - component: {fileID: 1114621196929014290}
   - component: {fileID: 4511068583282227793}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,8 @@ GameObject:
   - component: {fileID: 579523409436571080}
   - component: {fileID: 6413570156885939663}
   - component: {fileID: 6982165407376558224}
-  m_Layer: 0
+  - component: {fileID: 1447998030762817122}
+  m_Layer: 7
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,6 +280,28 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!95 &1447998030762817122
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5294389952001621157}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f70f5bae06625f242b6ebbaffa8911cc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5521131496072663668
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,7 +315,7 @@ GameObject:
   - component: {fileID: 5988300129453948161}
   - component: {fileID: 3563677932858583350}
   - component: {fileID: 7442982788444491700}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Flying Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -385,10 +408,9 @@ MonoBehaviour:
   moveSpeed: 7
   isAlive: 0
   MaxHealth: 50
-  AttackDamage: 0
   ScoreValue: 100
   patrolWaypoints: []
-  patrolStyle: 0
+  patrolStyle: 1
 --- !u!61 &3563677932858583350
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -471,7 +493,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5556421805038930050}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -509,7 +531,7 @@ GameObject:
   - component: {fileID: 9151478265232271616}
   - component: {fileID: 5395279007393261227}
   - component: {fileID: 4778788472613859}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -582,7 +604,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4259150976470031039}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}

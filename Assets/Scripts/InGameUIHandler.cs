@@ -25,15 +25,16 @@ public class InGameUIHandler : MonoBehaviour
     public void UpdateScoreDisplay(int score)
     {
         score = GameManager.Instance.GetCurrentScore(); // Get the current score from GameManager
+        string PlayerName = GameManager.Instance.GetPlayerName(); // Get the player's name from GameManager
         string scoreString = score.ToString(); // Convert score to string for display
-        scoreText.text = scoreString;
+        scoreText.text = $"Score: {PlayerName} {scoreString}";
     }
 
     public void UpdateLivesDisplay(int lives)
     {
         lives = GameManager.Instance.GetPlayerLives();
         string livesString = lives.ToString(); // Convert lives to string for display
-        livesText.text = livesString;
+        livesText.text = $"Lives: {livesString}";
     }
 
     public void UpdateHealthBar(float currentHealth, float maxHealth)

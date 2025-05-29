@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1445823245073926285}
   - component: {fileID: 6624705608483278661}
   - component: {fileID: 5182509626555180892}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 7136137451472127157}
   - component: {fileID: 1808184366540338172}
   - component: {fileID: 5663866756918100868}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Canvas (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8728567266968955334}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 477659287996976344}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -258,7 +258,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3201968830488508613}
   - component: {fileID: 475400574893936317}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: HP Bar (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -361,7 +361,7 @@ GameObject:
   - component: {fileID: 421252901519840295}
   - component: {fileID: 1461063381288705440}
   - component: {fileID: 4407027040834919504}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -438,7 +438,7 @@ GameObject:
   - component: {fileID: 5521326356774232739}
   - component: {fileID: 1798135456784159341}
   - component: {fileID: 8539287451596132984}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Boss Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -531,7 +531,6 @@ MonoBehaviour:
   moveSpeed: 10
   isAlive: 0
   MaxHealth: 300
-  AttackDamage: 0
   ScoreValue: 1000
   patrolWaypoints: []
   patrolStyle: 0

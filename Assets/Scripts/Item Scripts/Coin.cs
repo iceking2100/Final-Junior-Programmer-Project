@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 // This script defines a Coin class that inherits from Item
 
 public class Coin : Item
@@ -35,7 +34,7 @@ public class Coin : Item
         // Update logic for the coin can be added here if needed
         // For example, you might want to rotate the coin or add animations
         transform.Rotate(Vector2.up, 50 * Time.deltaTime); // Example
-        transform.Translate(Vector2.up * Mathf.Sin(Time.time) * 0.1f); // Example of a simple bobbing effect
+        transform.Translate(0.001f * Mathf.Sin(Time.time) * Vector2.up); // Example of a simple bobbing effect
 
     }
 

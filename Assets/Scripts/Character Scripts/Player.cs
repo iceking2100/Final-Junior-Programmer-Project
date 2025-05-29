@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : Character
 {
@@ -9,6 +10,8 @@ public class Player : Character
     // Health, move speed, and other properties can be set in the inspector or initialized here
     [SerializeField] private float speedModifier = 300f; // Speed modifier for player movement
     [SerializeField] private float maxHorizontalSpeed = 10f; // Maximum horizontal speed for the player
+    [SerializeField] private float playerHealthModifier = 2f; // Health modifier for the player
+    [SerializeField] private Slider healthSlider; // Reference to the health slider UI element
 
     private Rigidbody2D playerRb;
 
@@ -33,6 +36,10 @@ public class Player : Character
         }
         // Initialize player-specific properties
 
+        MaxHealth = base.MaxHealth * playerHealthModifier; // Set health based on the player health modifier
+
+        SetHealth(MaxHealth); // Initialize health to MaxHealth
+
         moveSpeed += speedModifier; // Increase move speed by the speed modifier
 
         // Ensure groundCheckPoint is assigned
@@ -40,13 +47,24 @@ public class Player : Character
         {
             Debug.LogError("GroundCheckPoint not assigned to Player Script!", this);
         }
+
+        // --- Initialize Health Slider ---
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = MaxHealth; // Set the maximum value of the health slider
+            healthSlider.value = Health; // Set the initial value of the health slider
+        }
+        else
+        {
+            Debug.LogWarning("Health Slider is not assigned in Player Script. Health UI will not be updated.", this);
+        }
     }
 
     private void Update()
     {
         if (isAlive)
         {
-            Move();
+            
             HandleJumpInput();
             // Add jump logic here if needed
         }
@@ -55,6 +73,7 @@ public class Player : Character
     // --- Grounded Check Method ---
     private void FixedUpdate() // Use FixedUpdate for physics-related checks
     {
+        Move();
         CheckIfGrounded();
     }
 
@@ -85,25 +104,20 @@ public class Player : Character
         float horizontalInput = Input.GetAxis("Horizontal");
 
         // Calculate desired horizontal velocity
-        float desiredXVelocity = horizontalInput * moveSpeed * Time.fixedDeltaTime; // Use Time.fixedDeltaTime for consistent physics calculations
+        float targetXVelocity = horizontalInput * moveSpeed * Time.fixedDeltaTime; // Use Time.fixedDeltaTime for consistent physics calculations
 
         // Get the current velocity of the player
-        Vector2 currentVelocity = playerRb.linearVelocity;
+        Vector2 currentLinearVelocity = playerRb.linearVelocity; // use Rigidbody2D's linearVelocity for physics-based movement
 
-        // Set the horizontal component of the velocity to the desired value
-        currentVelocity.x = desiredXVelocity;
+        // Smoothly approach the desired horizontal velocity
+        // you can use a smaller smoothing factor for crisper movement
+        currentLinearVelocity.x = Mathf.Lerp(currentLinearVelocity.x, targetXVelocity, 0.1f);
 
         // Clamp the horizontal velocity to prevent excessive speed
-        currentVelocity.x = Mathf.Clamp(currentVelocity.x, -maxHorizontalSpeed, maxHorizontalSpeed);
+        currentLinearVelocity.x = Mathf.Clamp(currentLinearVelocity.x, -maxHorizontalSpeed, maxHorizontalSpeed);
 
         // Apply the new velocity to the player
-        playerRb.linearVelocity = currentVelocity;
-
-        playerRb.AddForce(Vector2.right * horizontalInput * moveSpeed * Time.deltaTime, ForceMode2D.Force);
-
-        // Clamp the player's velocity to prevent excessive speed
-        Vector2 currentVel = playerRb.linearVelocity;
-        currentVel.x = Mathf.Clamp(currentVel.x, -maxHorizontalSpeed, maxHorizontalSpeed);
+        playerRb.linearVelocity = currentLinearVelocity;
         
     }
 

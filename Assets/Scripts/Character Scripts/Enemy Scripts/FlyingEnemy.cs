@@ -35,13 +35,13 @@ public class FlyingEnemy : Enemy
     // For example, it might have a unique attack method or movement pattern
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected override void Awake()
     {
-        // Initialization code for FlyingEnemy can go here
-        // For example, setting initial health, attack damage, etc.
-        float health = this.Health + 5; // Use the base class property with the current instance
-        Debug.Log("FlyingEnemy initialized.");
-
+        base.Awake(); // Always call base.Awake() first to ensure base class initialization
+        // Additional initialization for SlimeEnemy can go here
+        // For example, setting specific properties or behaviors for SlimeEnemy
+        SetHealth(MaxHealth); // Initialize health to max health
+        //Debug.Log("FlyingEnemy Awake called.");
     }
 
     // Update is called once per frame

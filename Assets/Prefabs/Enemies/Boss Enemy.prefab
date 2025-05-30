@@ -338,13 +338,13 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 5521326356774232739}
+        m_TargetAssemblyTypeName: Enemy, Assembly-CSharp
+        m_MethodName: HealthUpdate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -528,12 +528,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53166cfd9c3e0054c8ddcba50aa13a19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthSlider: {fileID: 475400574893936317}
   moveSpeed: 10
   isAlive: 0
   MaxHealth: 300
-  ScoreValue: 1000
+  flyingHealthModifier: 0.75
+  slimeHealthBonus: 1.5
+  scoreValue: 100
+  chaseRange: 5
+  loseChaseRange: 6
+  maxHorizontalSpeed: 5
+  turnBuffer: 0.1
   patrolWaypoints: []
-  patrolStyle: 0
+  patrolStyle: 1
+  enemyGroundCheckPoint: {fileID: 0}
+  enemyGroundCheckRadius: 0.1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  ledgeCheckPoint: {fileID: 0}
+  ledgeCheckDistance: 0.2
+  bossAttackCooldown: 2
+  bossAttackDamage: 20
+  bossHealthModifier: 3
+  bossSpeedModifier: 1.5
+  bossMaxHealth: 200
+  bossAttackRange: 3
+  SpecialAttackCooldown: 5
 --- !u!61 &1798135456784159341
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -606,4 +627,4 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4

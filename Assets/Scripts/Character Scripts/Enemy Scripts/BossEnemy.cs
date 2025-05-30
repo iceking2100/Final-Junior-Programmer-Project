@@ -6,14 +6,16 @@ public class BossEnemy : Enemy
 
     [Header("Boss Enemy Properties")]
     [SerializeField] private float bossAttackCooldown = 2f; // Cooldown time for BossEnemy's attacks
-    [SerializeField] private float bossAttackSpeed = 1.5f; // Attack speed for BossEnemy
+    //[SerializeField] private float bossAttackSpeed = 1.5f; // Attack speed for BossEnemy
     [SerializeField] private float bossAttackDamage = 20; // Attack damage for BossEnemy
     [SerializeField] private float bossHealthModifier = 3f; // Health modifier for BossEnemy
     [SerializeField] private float bossSpeedModifier = 1.5f; // Speed modifier for BossEnemy
     [SerializeField] private float bossMaxHealth = 200f; // Maximum health for BossEnemy
     [SerializeField] private float bossAttackRange = 3f; // Attack range for BossEnemy
-    [SerializeField] private float bossChaseRange = 10f; // Range within which BossEnemy will chase the player
+    //[SerializeField] private float bossChaseRange = 10f; // Range within which BossEnemy will chase the player
     [SerializeField] private float SpecialAttackCooldown = 5; // Example property for a boss enemy
+    
+    private int bossValue = 10; // Score value for defeating the BossEnemy
 
     protected override void Awake()
     {
@@ -24,6 +26,8 @@ public class BossEnemy : Enemy
         Health = MaxHealth; // Initialize health to max health
         moveSpeed *= bossSpeedModifier; // Adjust move speed based on modifier
         attackRange = bossAttackRange; // Set attack range for BossEnemy
+
+        scoreValue *= bossValue; // Set score value for defeating the BossEnemy
         // Debug log to confirm initialization
         Debug.Log($"BossEnemy initialized with health: {Health} , attack damage: {AttackDamage}");
         isAlive = true; // BossEnemy starts alive
@@ -43,6 +47,16 @@ public class BossEnemy : Enemy
         }
     }
 
+    // FixedUpdate is good for physics-based movement like patrolling or chasing targets
+    private void FixedUpdate()
+    {
+        if (isAlive)
+        {
+            // If the BossEnemy is meant to patrol, call the base patrol logic
+            // from its Move() implementation, which is called in FixedUpdate.
+            Move(); // This will call the overridden Move() below.
+        }
+    }
 
 
     public override void Attack()
@@ -88,6 +102,26 @@ public class BossEnemy : Enemy
     }
     public override void Move()
     {
+        // Check if the BossEnemy is alive before moving
+        if (!isAlive)
+        {
+            Debug.LogWarning("BossEnemy is dead and cannot move!");
+            return; // Exit if the boss is not alive
+        }
+
+        Vector3 targetPosition = GameManager.Instance.PlayerTransform.position; // Get the player's position
+
+        // Corrected the condition to compare distances using Vector3.Distance
+        if (isAlive && Vector3.Distance(transform.position, targetPosition) <= 10f)
+        {
+            // Implement the movement logic for BossEnemy
+            ChaseTarget(targetPosition); // Call the chase method to move towards the player
+        }
+        else
+        {
+            Debug.LogWarning("BossEnemy cannot move because it is not within range!");
+        }
+
         // Implement the movement logic for BossEnemy
         Debug.Log("BossEnemy moves with a heavy stomp!");
     }
@@ -120,6 +154,25 @@ public class BossEnemy : Enemy
     {
         if (SpecialAttackCooldown <= 0)
         {
+            // Implement the special attack logic for BossEnemy
+            // This could be a powerful attack that deals more damage or has a special effect
+            // For example, you might deal extra damage to the player or create an area of effect
+            // area that damages nearby enemies
+            // Assuming GameManager has a reference to the player and a method to apply damage
+            // Long range attack example
+            float attackRange = bossAttackRange * 2; // Define the range for the special attack
+
+            if (Vector3.Distance(GameManager.Instance.PlayerTransform.position, transform.position) <= attackRange)
+            {
+                // If the player is within attack range, perform the special attack
+
+                GameManager.Instance.PlayerObject.TakeDamage(AttackDamage);
+            }
+            else
+            {
+                Debug.Log("Player is out of range for BossEnemy's special attack!");
+            }
+
             Debug.Log("BossEnemy performs a special attack!");
             SpecialAttackCooldown = 5f; // Reset cooldown
         }

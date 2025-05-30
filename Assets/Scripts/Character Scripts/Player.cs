@@ -8,12 +8,18 @@ public class Player : Character
 
     // Player-specific properties
     // Health, move speed, and other properties can be set in the inspector or initialized here
+    [Header("Player Properties")] // New Header for player properties
     [SerializeField] private float speedModifier = 300f; // Speed modifier for player movement
     [SerializeField] private float maxHorizontalSpeed = 10f; // Maximum horizontal speed for the player
     [SerializeField] private float playerHealthModifier = 2f; // Health modifier for the player
     [SerializeField] private int playerAttackDamage = 20; // Player's attack damage
+    [SerializeField] private float playerPunchAttackRange = 1.5f; // Player's attack range
+    [SerializeField] private float playerAttackCooldownDuration = 1f; // Cooldown time for player attacks
+    private float attackCooldownTimer;
 
+    [Header("Player Rigidbody")] // New Header for Rigidbody properties
     private Rigidbody2D playerRb;
+
     [Header("Animation")] // New Header for animation properties
     [SerializeField] private Animator animator; // Reference to the Animator component (assigned in Inspector)
 
@@ -46,6 +52,8 @@ public class Player : Character
 
         AttackDamage = playerAttackDamage; // Set attack damage for the player
 
+        attackCooldownTimer = 0f;
+
         // Ensure groundCheckPoint is assigned
         if (groundCheckPoint == null)
         {
@@ -63,7 +71,7 @@ public class Player : Character
             Debug.LogError("GameManager instance is not available. Player registration failed.", this);
         }
 
-        // --- Initialize Health Slider ---
+/*        // --- Initialize Health Slider ---
         if (healthSlider != null)
         {
             healthSlider.maxValue = MaxHealth; // Set the maximum value of the health slider
@@ -72,28 +80,33 @@ public class Player : Character
         else
         {
             Debug.LogWarning("Health Slider is not assigned in Player Script. Health UI will not be updated.", this);
-        }
+        }*/
     }
 
     private void Update()
     {
-        if (isAlive)
-        {         
-            HandleJumpInput();
-            // Add jump logic here if needed
-            if (healthSlider != null)
-            {
-                healthSlider.value = Health; // Update the health slider value
-            }
-            else
-            {
-                Debug.LogWarning("Health Slider is not assigned in Player Script. Health UI will not be updated.", this);
-            }
-            if (Input.GetButtonDown("Fire1")) // Check if the attack button is pressed
-            {
-                Attack(); // Call the attack method
-            }
+        if (!isAlive) return;
+        
+        HandleJumpInput();
+            
+        // Update attack cooldown timer
+        if (attackCooldownTimer > 0f)
+        {
+            attackCooldownTimer -= Time.deltaTime;
         }
+
+/*        // Animator parameters for movement
+        if (animator != null)
+        {
+            animator.SetFloat("m_Speed", Mathf.Abs(playerRb.linearVelocity.x));
+            animator.SetBool("isGrounded", isGrounded);
+        }*/
+
+        if (Input.GetButtonDown("Fire1")) // Check if the attack button is pressed
+        {
+           Attack(); // Call the attack method
+        }
+        
     }
 
     // --- Grounded Check Method ---
@@ -121,13 +134,27 @@ public class Player : Character
     }
 
     public override void Attack()
-    {        
+    {
+        // Check if the player is alive before attacking
+        if (!isAlive)
+        {
+            Debug.LogWarning("Player is dead and cannot attack!");
+            return; // Exit if the player is not alive
+        }
+        // Check if the attack is off cooldown
+        if (attackCooldownTimer > 0)
+        {
+            Debug.Log("Player's attack is on cooldown!");
+            return; // Exit if the attack is on cooldown
+        }
+        // Perform the attack logic
         // You can also play an attack animation or sound here if desired
         // For example, you can use an Animator component to trigger an attack animation
-         if (animator != null)
-         {
+
+        if (animator != null)
+        {
             animator.SetTrigger("m_Punch"); // Assuming you have an "Attack" trigger in your Animator
-         }
+        }
         else
         {
             Debug.LogWarning("Animator component is not assigned in Player Script. Attack animation will not be played.", this);
@@ -137,11 +164,11 @@ public class Player : Character
 
         // You can also implement a specific attack method here if needed
         // For example, you can check for nearby enemies and apply damage
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, 1f, LayerMask.GetMask("Enemy")); // Adjust the radius and layer mask as needed
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, 1f * playerPunchAttackRange, LayerMask.GetMask("Enemy")); // Adjust the radius and layer mask as needed
         foreach (Collider2D enemy in hitEnemies)
         {
             Enemy enemyScript = enemy.GetComponent<Enemy>();
-            enemy.attachedRigidbody.linearVelocity = Vector2.MoveTowards(enemy.attachedRigidbody.linearVelocity, -transform.position, 0.1f); // knockback effect
+            enemy.attachedRigidbody.linearVelocity = Vector2.MoveTowards(enemy.attachedRigidbody.linearVelocity, -transform.position, 10.0f); // knockback effect
             // Check if the enemy has an Enemy script attached
             if (enemyScript != null)
             {
@@ -157,7 +184,11 @@ public class Player : Character
             }
         }
 
-         
+        // Reset the attack cooldown timer
+        attackCooldownTimer = playerAttackCooldownDuration;
+
+
+
 
         // You can also play an attack sound effect here if desired
         // AudioSource audioSource = GetComponent<AudioSource>();
@@ -187,7 +218,7 @@ public class Player : Character
 
         // Apply the new velocity to the player
         playerRb.linearVelocity = currentLinearVelocity;
-        
+
     }
 
     public override void TakeDamage(int damageAmount)

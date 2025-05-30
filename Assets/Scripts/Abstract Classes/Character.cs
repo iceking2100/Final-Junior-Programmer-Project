@@ -26,8 +26,13 @@ public abstract class Character : MonoBehaviour
     protected void SetHealth(float value)
     {
         Health = Mathf.Clamp(value, 0, MaxHealth); // Ensure health does not exceed MaxHealth
+        HealthUpdate();
     }
-    public abstract void TakeDamage(int damageAmount); // ABSTRACTION // POLYMORPHISM
+    public virtual void TakeDamage(int damageAmount)
+    {
+        SetHealth(Health - damageAmount); // or Health -= damageAmount
+        HealthUpdate(); // Call the UI update method
+    }
 
     public abstract void Attack(); // ABSTRACTION // POLYMORPHISM
 
@@ -49,6 +54,7 @@ public abstract class Character : MonoBehaviour
     {
         Debug.Log("Character Died.");
         isAlive = false;
+        GameManager.Instance.AddScore(ScoreValue);
     }
     protected virtual void Awake()
     {
